@@ -7,18 +7,15 @@
 
 import Foundation
 
-class InsultViewModel {
+struct InsultViewModel {
     
-    var insult: Insult?
+    var insultText: String
+    var number: String
     
-    init() {
-        self.getInsult()
-    }
-    
-    func getInsult() {
-        Service.getInsult(completion: { insult in
-            self.insult = insult
-        })
+    // Dependency Injection
+    init(insult: Insult) {
+        self.insultText = insult.insult
+        self.number = insult.number
     }
     
 }

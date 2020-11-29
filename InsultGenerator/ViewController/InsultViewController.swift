@@ -12,20 +12,31 @@ class InsultViewController: UIViewController {
     @IBOutlet weak var nummerLabel: UILabel!
     @IBOutlet weak var insultLabel: UILabel!
     
+    var insultVM = InsultViewModel(insult: Insult(number: "0", insult: "Dit is een test insult.")) {
+        didSet {
+            self.nummerLabel.text = "# \(insultVM.number):"
+            self.insultLabel.text = insultVM.insultText
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        Service.getInsult() { insult in
-            self.insultLabel.text = insult.insult
-            self.nummerLabel.text = "#\(insult.number)"
-        }
+        self.fetchInsult()
         
+        self.nummerLabel.text = "# \(insultVM.number):"
+        self.insultLabel.text = insultVM.insultText
     }
     
     @IBAction func insultButton(_ sender: Any) {
+        self.fetchInsult()
+    }
+    
+    func fetchInsult() {
+        
         Service.getInsult() { insult in
-            self.insultLabel.text = insult.insult
-            self.nummerLabel.text = "#\(insult.number)"
+            self.insultVM.insultText = insult.insult
+            self.insultVM.number = insult.number
         }
     }
 }
